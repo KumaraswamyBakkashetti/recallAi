@@ -47,6 +47,17 @@ Requires Node.js 20.19+.
 
 `GET /api/health` returns `{ "status": "ok" }` independently of Groq configuration. `npm test` runs deterministic tests without Groq. `npm run build` type-checks and builds the browser bundle. After building, `npm run start` serves the built app and API on port 3001 with a full dependency install.
 
+## Deploy to Vercel
+
+1. Import the GitHub repository into Vercel.
+2. Set **Root Directory** to the directory containing `package.json`.
+3. Use `npm run build` as the build command.
+4. Vercel serves the Vite frontend and automatically exposes the serverless API under `/api/*`.
+5. Add `GROQ_API_KEY` in Vercel **Environment Variables** for the environments you deploy.
+6. Never commit `.env`; the key must remain server-side.
+
+The catch-all Vercel function in `api/[...path].ts` forwards `/api/health` and `/api/generate` to the existing Express app. No separate backend deployment is needed. Production deployment still requires configuring and deploying the project in Vercel.
+
 ## Verification and limitations
 
 Automated tests cover content validation, ID assignment, provider failure mapping, API response handling, flashcard and quiz rules, scoring, retests, and session reset. A live Groq response and local frontend/API health checks were verified during development. Desktop interaction and mobile visual checks still require manual browser verification. The app does not persist plans across reloads, and AI answers can be inaccurate. There is no authentication or per-user rate limit; this is a local assignment prototype, not a public deployment configuration.

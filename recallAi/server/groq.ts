@@ -28,7 +28,9 @@ Begin every explanation with "Correct answer: " followed by the exact text of th
 Do not duplicate concepts, questions, or quiz options. Do not generate IDs.`;
 
 export async function requestStudyContent(material: string, apiKey: string, signal: AbortSignal): Promise<string | null> {
-  const groq = new Groq({ apiKey, timeout: 25_000, maxRetries: 0 });
+  const fetchWithNodeTypes = ((input: unknown, init?: Parameters<typeof globalThis.fetch>[1]) =>
+    globalThis.fetch(String(input), init)) as unknown as import('groq-sdk/core').Fetch;
+  const groq = new Groq({ apiKey, timeout: 25_000, maxRetries: 0, fetch: fetchWithNodeTypes });
   try {
     const completion = await groq.chat.completions.create({
       model: 'openai/gpt-oss-20b',
