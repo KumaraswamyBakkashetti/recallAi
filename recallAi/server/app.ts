@@ -4,7 +4,14 @@ import { generateStudyPlan, sendError } from './generate.ts';
 
 const app = express();
 
-app.use(express.json({ limit: '64kb' }));
+const parseJsonBody = express.json({ limit: '64kb' });
+app.use((request, response, next) => {
+  if ('body' in request) {
+    next();
+    return;
+  }
+  parseJsonBody(request, response, next);
+});
 app.get(['/api/health', '/health'], (_request, response) => {
   response.json({ status: 'ok' });
 });
