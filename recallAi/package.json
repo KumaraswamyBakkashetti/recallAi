@@ -1,0 +1,36 @@
+{
+  "name": "recallai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "tsx watch server/index.ts",
+    "dev:client": "vite",
+    "build": "tsc -b && vite build",
+    "start": "tsx server/index.ts",
+    "test": "tsx --test server/studyPlan.test.ts server/generate.test.ts src/lib/api.test.ts src/lib/studySession.test.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "groq-sdk": "^0.30.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "zod": "^4.1.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^9.2.1",
+    "tsx": "^4.20.5",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.3"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  }
+}
