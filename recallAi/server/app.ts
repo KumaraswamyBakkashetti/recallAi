@@ -5,13 +5,11 @@ import { generateStudyPlan, sendError } from './generate.ts';
 const app = express();
 
 const parseJsonBody = express.json({ limit: '64kb' });
-app.use((request, response, next) => {
-  if ('body' in request) {
-    next();
-    return;
-  }
-  parseJsonBody(request, response, next);
-});
+if (process.env.VERCEL) {
+  app.use((_request, _response, next) => next());
+} else {
+  app.use(parseJsonBody);
+}
 app.get(['/api/health', '/health'], (_request, response) => {
   response.json({ status: 'ok' });
 });
