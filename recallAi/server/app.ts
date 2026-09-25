@@ -5,10 +5,10 @@ import { generateStudyPlan, sendError } from './generate.ts';
 const app = express();
 
 app.use(express.json({ limit: '64kb' }));
-app.get('/api/health', (_request, response) => {
+app.get(['/api/health', '/health'], (_request, response) => {
   response.json({ status: 'ok' });
 });
-app.post('/api/generate', generateStudyPlan);
+app.post(['/api/generate', '/generate'], generateStudyPlan);
 
 const handleRequestError: ErrorRequestHandler = (error: unknown, _request, response, _next) => {
   if (response.headersSent) return;
@@ -23,7 +23,7 @@ const handleRequestError: ErrorRequestHandler = (error: unknown, _request, respo
 app.use(handleRequestError);
 
 app.use((request, response, next) => {
-  if (request.path === '/api' || request.path.startsWith('/api/')) {
+  if (request.path === '/api' || request.path.startsWith('/api/') || request.path === '/health' || request.path === '/generate') {
     sendError(response, 404, 'INVALID_INPUT', 'This API endpoint does not exist.');
     return;
   }
